@@ -20,6 +20,7 @@ model merchants {
   updated_by     String?   @db.Char(36)
   users          users[]
   upload         uploads?  @relation(fields: [logo_upload_id], references: [id], onDelete: SetNull, map: "merchants_ibfk_logo_upload")
+  ai_review_projects ai_review_projects[]
 
   @@index([logo_upload_id], map: "idx_merchants_logo_upload")
 }
@@ -131,3 +132,136 @@ model users {
   @@index([merchant_id], map: "idx_users_merchant")
   @@index([avatar_upload_id], map: "idx_users_avatar_upload")
 }
+
+enum AiReviewProvider {
+  GITLAB
+}
+
+enum AiReviewReviewMode {
+  DIFF_ONLY
+  FULL_FILE
+}
+
+enum AiReviewJobStatus {
+  QUEUED
+  PROCESSING
+  SUCCESS
+  FAILED
+}
+
+enum AiReviewSeverity {
+  HIGH
+  MEDIUM
+  LOW
+}
+
+enum AiReviewFindingCategory {
+  SECURITY
+  BUG
+  ARCHITECTURE
+  VALIDATION
+  PERFORMANCE
+  MAINTAINABILITY
+  TESTING
+}
+
+model ai_review_projects {
+  id                   String             @id @default(dbgenerated("(uuid())")) @db.Char(36)
+  merchant_id          String?            @db.Char(36)
+  name                 String             @db.VarChar(150)
+  provider             AiReviewProvider   @default(GITLAB)
+  
+  // GitLab connection
+  gitlab_base_url      String             @default("https://gitlab.com") @db.VarChar(255)
+  gitlab_project_id    String             @db.VarChar(120)
+  gitlab_project_path  String             @db.VarChar(255)
+  webhook_secret       String             @db.VarChar(255)
+  access_token         String             @db.Text
+  
+  // Review behaviour
+  default_branch       String?            @default("main") @db.VarChar(120)
+  is_active            Boolean            @default(true)
+  auto_review_enabled  Boolean            @default(true)
+  review_mode          AiReviewReviewMode @default(DIFF_ONLY)
+  max_changed_files    Int                @default(30)
+  max_patch_chars      Int                @default(120000)
+  ignore_patterns      Json               @default("[]")
+  
+  created_by           String?            @db.Char(36)
+  created_at           DateTime           @default(now()) @db.Timestamp(0)
+  updated_at           DateTime           @default(now()) @db.Timestamp(0)
+  
+  merchants            merchants?         @relation(fields: [merchant_id], references: [id], onDelete: SetNull, onUpdate: NoAction, map: "ai_review_projects_ibfk_merchant")
+  ai_review_jobs       ai_review_jobs[]
+
+  @@unique([gitlab_project_id], map: "unique_gitlab_project_id")
+  @@index([merchant_id], map: "idx_ai_review_projects_merchant")
+}
+
+model ai_review_jobs {
+  id                    String              @id @default(dbgenerated("(uuid())")) @db.Char(36)
+  ai_review_project_id  String              @db.Char(36)
+  provider              AiReviewProvider    @default(GITLAB)
+  event_type            String              @db.VarChar(100)
+  status                AiReviewJobStatus   @default(QUEUED)
+  
+  // MR identity
+  gitlab_project_id     String              @db.VarChar(120)
+  mr_iid                Int
+  mr_id                 Int?
+  mr_title              String              @db.VarChar(255)
+  mr_url                String?             @db.VarChar(500)
+  source_branch         String?             @db.VarChar(255)
+  target_branch         String?             @db.VarChar(255)
+  sha                   String?             @db.VarChar(100)
+  base_sha              String?             @db.VarChar(100)
+  
+  // Processing metrics
+  changed_files_count   Int                 @default(0)
+  model_name            String?             @db.VarChar(100)
+  review_mode_snapshot  String?             @db.VarChar(100)
+  
+  // Output
+  summary_markdown      String?             @db.LongText
+  raw_response_json     Json?
+  error_message         String?             @db.Text
+  
+  // Timing
+  started_at            DateTime?           @db.Timestamp(0)
+  finished_at           DateTime?           @db.Timestamp(0)
+  created_at            DateTime            @default(now()) @db.Timestamp(0)
+  updated_at            DateTime            @default(now()) @db.Timestamp(0)
+  
+  project               ai_review_projects  @relation(fields: [ai_review_project_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "ai_review_jobs_ibfk_project")
+  ai_review_findings    ai_review_findings[]
+
+  @@index([ai_review_project_id], map: "idx_ai_review_jobs_project")
+  @@index([gitlab_project_id, mr_iid], map: "idx_ai_review_jobs_mr")
+  @@index([status], map: "idx_ai_review_jobs_status")
+  @@index([created_at], map: "idx_ai_review_jobs_created")
+}
+
+model ai_review_findings {
+  id                String                  @id @default(dbgenerated("(uuid())")) @db.Char(36)
+  ai_review_job_id  String                  @db.Char(36)
+  
+  file_path         String?                 @db.VarChar(500)
+  line              Int?
+  severity          AiReviewSeverity
+  category          AiReviewFindingCategory
+  title             String                  @db.VarChar(255)
+  description       String                  @db.Text
+  suggestion        String?                 @db.Text
+  confidence        Float?                  @db.Float
+  fingerprint       String?                 @db.VarChar(255)
+  
+  created_at        DateTime                @default(now()) @db.Timestamp(0)
+  updated_at        DateTime                @default(now()) @db.Timestamp(0)
+  
+  job               ai_review_jobs          @relation(fields: [ai_review_job_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "ai_review_findings_ibfk_job")
+
+  @@index([ai_review_job_id], map: "idx_ai_review_findings_job")
+  @@index([severity], map: "idx_ai_review_findings_severity")
+  @@index([fingerprint], map: "idx_ai_review_findings_fingerprint")
+}
+
