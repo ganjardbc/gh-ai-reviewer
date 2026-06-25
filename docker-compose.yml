@@ -1,0 +1,37 @@
+services:
+  gh-skeleton-db:
+    image: mysql:8.0
+    container_name: gh-skeleton-db
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: db_gh_skeleton
+    networks:
+      - devbox_devnet
+    restart: always
+
+  gh-skeleton-api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    container_name: gh-skeleton-api
+    expose:
+      - "3000"
+    environment:
+      - PORT=3000
+      - NODE_ENV=production
+      - DATABASE_URL=mysql://root:rootpassword@gh-skeleton-db:3306/db_gh_skeleton
+      - JWT_SECRET=supersecret2026
+      - JWT_EXPIRES_IN=7d
+      - API_PREFIX=api
+      - API_VERSION=v1
+      - CORS_ORIGIN=https://app.insell.web.id,https://www.insell.web.id,https://insell.web.id,http://localhost:3000
+    depends_on:
+      - gh-skeleton-db
+    networks:
+      - devbox_devnet
+    restart: always
+
+networks:
+  devbox_devnet:
+    name: devbox_devnet
+    driver: bridge

@@ -1,0 +1,133 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+model merchants {
+  id             String    @id @default(dbgenerated("(uuid())")) @db.Char(36)
+  slug           String    @unique(map: "slug") @db.VarChar(120)
+  name           String    @db.VarChar(150)
+  phone          String?   @db.VarChar(50)
+  address        String?   @db.Text
+  logo           String?   @db.Text
+  logo_upload_id String?   @db.Char(36)
+  created_at     DateTime  @default(now()) @db.Timestamp(0)
+  updated_at     DateTime  @default(now()) @db.Timestamp(0)
+  created_by     String?   @db.Char(36)
+  updated_by     String?   @db.Char(36)
+  users          users[]
+  upload         uploads?  @relation(fields: [logo_upload_id], references: [id], onDelete: SetNull, map: "merchants_ibfk_logo_upload")
+
+  @@index([logo_upload_id], map: "idx_merchants_logo_upload")
+}
+
+model notifications {
+  id         String   @id @default(dbgenerated("(uuid())")) @db.Char(36)
+  user_id    String   @db.Char(36)
+  title      String   @db.VarChar(255)
+  message    String   @db.Text
+  type       String   @default("general") @db.VarChar(50)
+  is_read    Boolean  @default(false)
+  created_at DateTime @default(now()) @db.Timestamp(0)
+  updated_at DateTime @default(now()) @db.Timestamp(0)
+  users      users    @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "notifications_ibfk_1")
+
+  @@index([user_id], map: "idx_notifications_user")
+  @@index([is_read], map: "idx_notifications_is_read")
+  @@index([created_at], map: "idx_notifications_created")
+}
+
+model permissions {
+  id               String             @id @default(dbgenerated("(uuid())")) @db.Char(36)
+  code             String             @unique(map: "code") @db.VarChar(120)
+  description      String?            @db.Text
+  created_at       DateTime           @default(now()) @db.Timestamp(0)
+  updated_at       DateTime           @default(now()) @db.Timestamp(0)
+  created_by       String?            @db.Char(36)
+  updated_by       String?            @db.Char(36)
+  role_permissions role_permissions[]
+}
+
+model role_permissions {
+  role_id       String      @db.Char(36)
+  permission_id String      @db.Char(36)
+  created_at    DateTime    @default(now()) @db.Timestamp(0)
+  updated_at    DateTime    @default(now()) @db.Timestamp(0)
+  created_by    String?     @db.Char(36)
+  updated_by    String?     @db.Char(36)
+  roles         roles       @relation(fields: [role_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "role_permissions_ibfk_1")
+  permissions   permissions @relation(fields: [permission_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "role_permissions_ibfk_2")
+
+  @@id([role_id, permission_id])
+  @@index([permission_id], map: "permission_id")
+}
+
+model roles {
+  id               String             @id @default(dbgenerated("(uuid())")) @db.Char(36)
+  name             String             @unique(map: "name") @db.VarChar(100)
+  description      String?            @db.Text
+  created_at       DateTime           @default(now()) @db.Timestamp(0)
+  updated_at       DateTime           @default(now()) @db.Timestamp(0)
+  role_permissions role_permissions[]
+  user_roles       user_roles[]
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model uploads {
+  id             String      @id @default(dbgenerated("(uuid())")) @db.Char(36)
+  original_name  String      @db.VarChar(255)
+  mime_type      String      @db.VarChar(100)
+  size           Int
+  s3_key         String      @db.VarChar(500)
+  bucket         String      @db.VarChar(255)
+  uploaded_by_id String      @db.Char(36)
+  created_at     DateTime    @default(now()) @db.Timestamp(0)
+  updated_at     DateTime    @default(now()) @db.Timestamp(0)
+  merchants      merchants[]
+  users          users[]
+
+  @@index([uploaded_by_id], map: "idx_uploads_uploaded_by")
+}
+
+model user_roles {
+  user_id    String   @db.Char(36)
+  role_id    String   @db.Char(36)
+  created_at DateTime @default(now()) @db.Timestamp(0)
+  updated_at DateTime @default(now()) @db.Timestamp(0)
+  created_by String?  @db.Char(36)
+  updated_by String?  @db.Char(36)
+  users      users    @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "user_roles_ibfk_1")
+  roles      roles    @relation(fields: [role_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "user_roles_ibfk_2")
+
+  @@id([user_id, role_id])
+  @@index([user_id], map: "idx_user_roles_user")
+  @@index([role_id], map: "role_id")
+}
+
+model users {
+  id               String          @id @default(dbgenerated("(uuid())")) @db.Char(36)
+  merchant_id      String          @db.Char(36)
+  avatar           String?         @db.Text
+  avatar_upload_id String?         @db.Char(36)
+  username         String          @db.VarChar(120)
+  name             String          @db.VarChar(150)
+  email            String          @db.VarChar(150)
+  password_hash    String          @db.Text
+  is_active        Boolean         @default(true)
+  created_at       DateTime        @default(now()) @db.Timestamp(0)
+  updated_at       DateTime        @default(now()) @db.Timestamp(0)
+  created_by       String?         @db.Char(36)
+  updated_by       String?         @db.Char(36)
+  user_roles       user_roles[]
+  notifications    notifications[]
+  merchants        merchants       @relation(fields: [merchant_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "users_ibfk_1")
+  upload           uploads?        @relation(fields: [avatar_upload_id], references: [id], onDelete: SetNull, map: "users_ibfk_avatar_upload")
+
+  @@unique([merchant_id, email], map: "unique_merchant_email")
+  @@unique([merchant_id, username], map: "unique_merchant_username")
+  @@index([merchant_id], map: "idx_users_merchant")
+  @@index([avatar_upload_id], map: "idx_users_avatar_upload")
+}
