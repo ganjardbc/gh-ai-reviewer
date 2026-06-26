@@ -4,7 +4,7 @@ import { Logger } from '@nestjs/common';
 import { AiReviewRunnerService } from '../services/ai-review-runner.service';
 import { AI_REVIEW_QUEUE } from '../constants';
 
-@Processor(AI_REVIEW_QUEUE)
+@Processor(AI_REVIEW_QUEUE, { concurrency: 5 })
 export class AiReviewProcessor extends WorkerHost {
   private readonly logger = new Logger(AiReviewProcessor.name);
 

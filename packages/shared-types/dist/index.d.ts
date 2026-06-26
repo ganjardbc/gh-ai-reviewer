@@ -6,3 +6,4 @@ export interface ServiceHealth {
 export type { ApiResponse, PaginationMeta } from './common/pagination';
 export type { AuthMerchant, AuthUser } from './auth/auth.types';
 export type { UserSummary } from './users/user.types';
+export * from './ai-review.js';

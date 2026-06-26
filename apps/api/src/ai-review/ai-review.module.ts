@@ -21,11 +21,12 @@ import { AiReviewProjectService } from './services/ai-review-project.service';
 import { AiReviewJobService } from './services/ai-review-job.service';
 import { AiReviewProjectController } from './controllers/ai-review-project.controller';
 import { AiReviewJobController } from './controllers/ai-review-job.controller';
+import { AI_REVIEW_QUEUE } from './constants';
 
 @Module({
   imports: [
     BullModule.registerQueue({
-      name: 'ai-review',
+      name: AI_REVIEW_QUEUE,
     }),
   ],
   controllers: [

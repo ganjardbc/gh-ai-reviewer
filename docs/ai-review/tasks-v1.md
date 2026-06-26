@@ -231,7 +231,7 @@ graph TD
 - **Files**: `apps/api/src/ai-review/repositories/ai-review-project.repository.ts`
 - **Dependencies**: Task 1.5
 - **Implementation**:
-    - [ ] Implement `create()`, `update()`, `findById()`, `list()`, and `delete()`.
+    - [x] Implement `create()`, `update()`, `findById()`, `list()`, and `delete()`.
 - **Acceptance Criteria**: Compiles without Prisma input constraints type mismatch.
 - **Test**: Verify repository functionality using local DB sandbox unit tests.
 - **Estimated Complexity**: S
@@ -242,7 +242,7 @@ graph TD
 - **Files**: `apps/api/src/ai-review/dto/create-ai-review-project.dto.ts`, `apps/api/src/ai-review/dto/update-ai-review-project.dto.ts`
 - **Dependencies**: Task 2.1
 - **Implementation**:
-    - [ ] Define decorators (`IsNotEmpty`, `IsString`, `Min`, `Max`).
+    - [x] Define decorators (`IsNotEmpty`, `IsString`, `Min`, `Max`).
     - [ ] Enforce range values on max changed files.
 - **Acceptance Criteria**: DTO decorators filter and validate payload properties properly.
 - **Test**: Run manual parsing tests using class-validator execution checks.
@@ -254,8 +254,8 @@ graph TD
 - **Files**: `apps/api/src/ai-review/services/ai-review-project.service.ts`
 - **Dependencies**: Task 2.2
 - **Implementation**:
-    - [ ] Check ownership matching the tenant (`merchant_id`).
-    - [ ] Implement response sanitization to remove raw `access_token` and `webhook_secret` values from return objects.
+    - [x] Check ownership matching the tenant (`merchant_id`).
+    - [x] Implement response sanitization to remove raw `access_token` and `webhook_secret` values from return objects.
 - **Acceptance Criteria**: Read calls map database output cleanly and sanitize secrets.
 - **Test**: Mock project repository returns and verify object property sanitizations.
 - **Estimated Complexity**: M
@@ -266,7 +266,7 @@ graph TD
 - **Files**: `apps/api/src/ai-review/controllers/ai-review-project.controller.ts`
 - **Dependencies**: Task 2.3
 - **Implementation**:
-    - [ ] Define routes: `@Post()`, `@Get()`, `@Get(':id')`, `@Patch(':id')`, `@Delete(':id')`.
+    - [x] Define routes: `@Post()`, `@Get()`, `@Get(':id')`, `@Patch(':id')`, `@Delete(':id')`.
 - **Acceptance Criteria**: Routes match structural controller endpoints specification.
 - **Test**: Trigger endpoints using local execution and assert payload return headers.
 - **Estimated Complexity**: S
@@ -277,8 +277,8 @@ graph TD
 - **Files**: `apps/api/src/ai-review/controllers/ai-review-project.controller.ts`
 - **Dependencies**: Task 2.4
 - **Implementation**:
-    - [ ] Inject `@RequirePermission('ai_review.projects.create')`, etc.
-    - [ ] Inject `@UseGuards(PermissionGuard)`.
+    - [x] Inject `@RequirePermission('ai_review.projects.create')`, etc.
+    - [x] Inject `@UseGuards(PermissionGuard)`.
 - **Acceptance Criteria**: Request without valid JWT permissions returns `403 Forbidden`.
 - **Test**: Execute tests utilizing non-privileged token payloads.
 - **Estimated Complexity**: S
@@ -289,7 +289,7 @@ graph TD
 - **Files**: `apps/api/src/ai-review/services/ai-review-project.service.spec.ts`, `apps/api/src/ai-review/controllers/ai-review-project.controller.spec.ts`
 - **Dependencies**: Task 2.5
 - **Implementation**:
-    - [ ] Test CRUD isolation, parameter sanitizations, and invalid tenant scoping exceptions.
+    - [x] Test CRUD isolation, parameter sanitizations, and invalid tenant scoping exceptions.
 - **Acceptance Criteria**: Test coverage passes 100%.
 - **Test**: Run command `jest project.controller.spec.ts`.
 - **Estimated Complexity**: M
@@ -304,7 +304,7 @@ graph TD
 - **Files**: `apps/api/src/ai-review/gitlab/gitlab-mapper.ts`
 - **Dependencies**: Task 1.5
 - **Implementation**:
-    - [ ] Implement `mapGitlabWebhook(payload: any)`.
+    - [x] Implement `mapGitlabWebhook(payload: any)`.
 - **Acceptance Criteria**: Returns values matches property mapping requirements.
 - **Test**: Feed mock webhook payloads and inspect return properties.
 - **Estimated Complexity**: S
@@ -315,8 +315,8 @@ graph TD
 - **Files**: `apps/api/src/ai-review/gitlab/gitlab-webhook-verifier.service.ts`
 - **Dependencies**: Task 3.1
 - **Implementation**:
-    - [ ] Verify `clientToken === projectSecret`.
-    - [ ] Throw `UnauthorizedException` on mismatch.
+    - [x] Verify `clientToken === projectSecret`.
+    - [x] Throw `UnauthorizedException` on mismatch.
 - **Acceptance Criteria**: Verifier successfully filters headers.
 - **Test**: Mock token checks validating matched and mismatched signatures.
 - **Estimated Complexity**: S
@@ -327,8 +327,8 @@ graph TD
 - **Files**: `apps/api/src/ai-review/gitlab/gitlab-webhook.controller.ts`
 - **Dependencies**: Task 3.2
 - **Implementation**:
-    - [ ] Set route base at `webhooks/gitlab`.
-    - [ ] Map `@Post('merge-request')` endpoint with `@Public()`.
+    - [x] Set route base at `webhooks/gitlab`.
+    - [x] Map `@Post('merge-request')` endpoint with `@Public()`.
 - **Acceptance Criteria**: Controller accepts POST requests without global authorization guards.
 - **Test**: Post sample request to the webhook endpoint locally.
 - **Estimated Complexity**: S
@@ -339,9 +339,9 @@ graph TD
 - **Files**: `apps/api/src/ai-review/gitlab/gitlab-webhook.service.ts`
 - **Dependencies**: Task 3.3
 - **Implementation**:
-    - [ ] Fetch project configuration by GitLab ID.
-    - [ ] Generate job record with status `QUEUED`.
-    - [ ] Return immediately to controller.
+    - [x] Fetch project configuration by GitLab ID.
+    - [x] Generate job record with status `QUEUED`.
+    - [x] Return immediately to controller.
 - **Acceptance Criteria**: Service validates signatures and logs queued job record in DB.
 - **Test**: Inspect created database rows after triggering callback endpoint.
 - **Estimated Complexity**: M
@@ -352,7 +352,7 @@ graph TD
 - **Files**: `apps/api/src/ai-review/gitlab/gitlab-webhook.service.spec.ts`, `apps/api/src/ai-review/gitlab/gitlab-webhook-verifier.spec.ts`
 - **Dependencies**: Task 3.4
 - **Implementation**:
-    - [ ] Write mock assertions validating event action filters and verifier outputs.
+    - [x] Write mock assertions validating event action filters and verifier outputs.
 - **Acceptance Criteria**: All webhook specs pass.
 - **Test**: Run `jest gitlab-webhook`.
 - **Estimated Complexity**: M
@@ -367,7 +367,7 @@ graph TD
 - **Files**: `apps/api/src/ai-review/ai-review.module.ts`
 - **Dependencies**: Task 3.5
 - **Implementation**:
-    - [ ] Inject `BullModule.registerQueue({ name: AI_REVIEW_QUEUE })`.
+    - [x] Inject `BullModule.registerQueue({ name: AI_REVIEW_QUEUE })`.
 - **Acceptance Criteria**: Nest module initializes and connects to Redis.
 - **Test**: Verify connection events logging on application boot.
 - **Estimated Complexity**: S
@@ -378,8 +378,8 @@ graph TD
 - **Files**: `apps/api/src/ai-review/queue/ai-review.processor.ts`
 - **Dependencies**: Task 4.1
 - **Implementation**:
-    - [ ] Extend `WorkerHost` class.
-    - [ ] Process callback logic in `process(job: Job)` method.
+    - [x] Extend `WorkerHost` class.
+    - [x] Process callback logic in `process(job: Job)` method.
 - **Acceptance Criteria**: Worker successfully consumes queue payloads.
 - **Test**: Inject mock job events to Redis queue and confirm pickup logging.
 - **Estimated Complexity**: S
@@ -390,7 +390,7 @@ graph TD
 - **Files**: `apps/api/src/ai-review/queue/ai-review.processor.ts`
 - **Dependencies**: Task 4.2
 - **Implementation**:
-    - [ ] Set worker options settings to concurrency limit count `5`.
+    - [x] Set worker options settings to concurrency limit count `5`.
 - **Acceptance Criteria**: Concurrency limits constraints restrict active executions.
 - **Test**: Push multiple concurrent tasks to Redis and check active runner limits.
 - **Estimated Complexity**: XS
@@ -401,8 +401,8 @@ graph TD
 - **Files**: `apps/api/src/ai-review/queue/ai-review.processor.ts`
 - **Dependencies**: Task 4.3
 - **Implementation**:
-    - [ ] Log errors using NestJS Logger.
-    - [ ] Re-throw errors to trigger BullMQ retry logic.
+    - [x] Log errors using NestJS Logger.
+    - [x] Re-throw errors to trigger BullMQ retry logic.
 - **Acceptance Criteria**: Failures are logged and jobs marked failed in BullMQ.
 - **Test**: Trigger mock runner crash exceptions and verify logs.
 - **Estimated Complexity**: S
@@ -413,7 +413,7 @@ graph TD
 - **Files**: `apps/api/src/ai-review/queue/ai-review.processor.spec.ts`
 - **Dependencies**: Task 4.4
 - **Implementation**:
-    - [ ] Write mock tests asserting worker processor handlers call routing services correctly.
+    - [x] Write mock tests asserting worker processor handlers call routing services correctly.
 - **Acceptance Criteria**: Worker spec cases pass.
 - **Test**: Run `jest ai-review.processor`.
 - **Estimated Complexity**: M
@@ -428,8 +428,8 @@ graph TD
 - **Files**: `apps/api/src/ai-review/gitlab/gitlab-api.service.ts`
 - **Dependencies**: Task 1.5
 - **Implementation**:
-    - [ ] Configure `cleanBaseUrl` formatter.
-    - [ ] Set `PRIVATE-TOKEN` headers.
+    - [x] Configure `cleanBaseUrl` formatter.
+    - [x] Set `PRIVATE-TOKEN` headers.
 - **Acceptance Criteria**: REST service handles clean URL formatting.
 - **Test**: Execute mock HTTP configurations and assert header fields.
 - **Estimated Complexity**: S
@@ -440,7 +440,7 @@ graph TD
 - **Files**: `apps/api/src/ai-review/gitlab/gitlab-api.service.ts`
 - **Dependencies**: Task 5.1
 - **Implementation**:
-    - [ ] Fetch from `/api/v4/projects/:id/merge_requests/:iid`.
+    - [x] Fetch from `/api/v4/projects/:id/merge_requests/:iid`.
 - **Acceptance Criteria**: Returns `GitlabMrDetail` mappings.
 - **Test**: Feed mock project tokens and check result parser outputs.
 - **Estimated Complexity**: S
@@ -451,7 +451,7 @@ graph TD
 - **Files**: `apps/api/src/ai-review/gitlab/gitlab-api.service.ts`
 - **Dependencies**: Task 5.2
 - **Implementation**:
-    - [ ] Fetch from `/api/v4/projects/:id/merge_requests/:iid/changes`.
+    - [x] Fetch from `/api/v4/projects/:id/merge_requests/:iid/changes`.
 - **Acceptance Criteria**: Returns MR changes array.
 - **Test**: Execute mock runs parsing diff modifications arrays.
 - **Estimated Complexity**: S
@@ -462,7 +462,7 @@ graph TD
 - **Files**: `apps/api/src/ai-review/gitlab/gitlab-api.service.ts`
 - **Dependencies**: Task 5.3
 - **Implementation**:
-    - [ ] Post payload to `/api/v4/projects/:id/merge_requests/:iid/notes`.
+    - [x] Post payload to `/api/v4/projects/:id/merge_requests/:iid/notes`.
 - **Acceptance Criteria**: Returns published note identifiers.
 - **Test**: Execute mock calls asserting payload outputs.
 - **Estimated Complexity**: S
@@ -473,7 +473,7 @@ graph TD
 - **Files**: `apps/api/src/ai-review/gitlab/gitlab-api.service.spec.ts`
 - **Dependencies**: Task 5.4
 - **Implementation**:
-    - [ ] Assert status errors return matching NestJS HttpException errors.
+    - [x] Assert status errors return matching NestJS HttpException errors.
 - **Acceptance Criteria**: Integration unit tests compile and pass.
 - **Test**: Run `jest gitlab-api.service.spec.ts`.
 - **Estimated Complexity**: M
@@ -488,8 +488,8 @@ graph TD
 - **Files**: `apps/api/src/ai-review/utils/glob-matcher.ts`
 - **Dependencies**: Task 0.5
 - **Implementation**:
-    - [ ] Create `isIgnored(path: string, patterns: string[]): boolean`.
-    - [ ] Support wildcard patterns checks.
+    - [x] Create `isIgnored(path: string, patterns: string[]): boolean`.
+    - [x] Support wildcard patterns checks.
 - **Acceptance Criteria**: Matcher filters paths case-insensitively.
 - **Test**: Run spec validations checking ignore patterns matches.
 - **Estimated Complexity**: S
@@ -500,7 +500,7 @@ graph TD
 - **Files**: `apps/api/src/ai-review/services/ai-review-context-builder.service.ts`
 - **Dependencies**: Task 6.1
 - **Implementation**:
-    - [ ] Filter target lists matching `ignore_patterns` configurations.
+    - [x] Filter target lists matching `ignore_patterns` configurations.
 - **Acceptance Criteria**: Output lists exclude locked or binary paths.
 - **Test**: Verify filter logic using sample configurations arrays.
 - **Estimated Complexity**: S
@@ -511,7 +511,7 @@ graph TD
 - **Files**: `apps/api/src/ai-review/services/ai-review-context-builder.service.ts`
 - **Dependencies**: Task 6.2
 - **Implementation**:
-    - [ ] Drop objects containing empty patches or binary flags.
+    - [x] Drop objects containing empty patches or binary flags.
 - **Acceptance Criteria**: Context excludes image/compiled modifications.
 - **Test**: Trigger parsing matching image files and verify omissions.
 - **Estimated Complexity**: S
@@ -522,8 +522,8 @@ graph TD
 - **Files**: `apps/api/src/ai-review/services/ai-review-context-builder.service.ts`
 - **Dependencies**: Task 6.3
 - **Implementation**:
-    - [ ] Compare string lengths against project config bounds.
-    - [ ] Truncate excess length, append warning flags.
+    - [x] Compare string lengths against project config bounds.
+    - [x] Truncate excess length, append warning flags.
 - **Acceptance Criteria**: Size bounds are capped at max limits constraints.
 - **Test**: Feed long sample patch strings and check slice indicators.
 - **Estimated Complexity**: M
@@ -534,7 +534,7 @@ graph TD
 - **Files**: `apps/api/src/ai-review/services/ai-review-context-builder.service.spec.ts`
 - **Dependencies**: Task 6.4
 - **Implementation**:
-    - [ ] Test context properties mappings and truncation rules.
+    - [x] Test context properties mappings and truncation rules.
 - **Acceptance Criteria**: Matcher and builder test suites pass.
 - **Test**: Run `jest ai-review-context-builder`.
 - **Estimated Complexity**: M
@@ -549,7 +549,7 @@ graph TD
 - **Files**: `apps/api/src/ai-review/llm/prompts/reviewer-system.prompt.ts`
 - **Dependencies**: Task 0.5
 - **Implementation**:
-    - [ ] Write role, JSON response structure formats, and anti-noise instructions.
+    - [x] Write role, JSON response structure formats, and anti-noise instructions.
 - **Acceptance Criteria**: Blueprints declare correct JSON schemas.
 - **Test**: Validate template output structure.
 - **Estimated Complexity**: S
@@ -560,8 +560,8 @@ graph TD
 - **Files**: `apps/api/src/ai-review/llm/prompts/reviewer-user.prompt.ts`, `apps/api/src/ai-review/llm/prompt-builder.service.ts`
 - **Dependencies**: Task 7.1
 - **Implementation**:
-    - [ ] Interpolate context properties.
-    - [ ] Format outputs into standard array formats.
+    - [x] Interpolate context properties.
+    - [x] Format outputs into standard array formats.
 - **Acceptance Criteria**: Builder structures message payload correctly.
 - **Test**: Assert generated outputs match expected structure layouts.
 - **Estimated Complexity**: S
@@ -572,8 +572,8 @@ graph TD
 - **Files**: `apps/api/src/ai-review/llm/nine-router.adapter.ts`
 - **Dependencies**: Task 7.2
 - **Implementation**:
-    - [ ] Direct calls to `${baseUrl}/v1/chat/completions`.
-    - [ ] Inject Bearer key headers and set JSON response format.
+    - [x] Direct calls to `${baseUrl}/v1/chat/completions`.
+    - [x] Inject Bearer key headers and set JSON response format.
 - **Acceptance Criteria**: Client posts payloads and retrieves content returns.
 - **Test**: Mock fetch endpoints and verify parsed string results.
 - **Estimated Complexity**: M
@@ -584,8 +584,8 @@ graph TD
 - **Files**: `apps/api/src/ai-review/llm/nine-router.adapter.ts`
 - **Dependencies**: Task 7.3
 - **Implementation**:
-    - [ ] Inject `AbortSignal.timeout(180000)` into fetch requests.
-    - [ ] Handle TimeoutError and convert to internal Server error.
+    - [x] Inject `AbortSignal.timeout(180000)` into fetch requests.
+    - [x] Handle TimeoutError and convert to internal Server error.
 - **Acceptance Criteria**: Calls hanging over 3 minutes terminate and throw exceptions.
 - **Test**: Simulate API timeout delays and assert thrown errors.
 - **Estimated Complexity**: S
@@ -596,7 +596,7 @@ graph TD
 - **Files**: `apps/api/src/ai-review/llm/nine-router.adapter.spec.ts`, `apps/api/src/ai-review/llm/ai-review-llm.service.ts`
 - **Dependencies**: Task 7.4
 - **Implementation**:
-    - [ ] Mock completions calls validating mappings and timeout bubble triggers.
+    - [x] Mock completions calls validating mappings and timeout bubble triggers.
 - **Acceptance Criteria**: LLM adapter spec cases pass.
 - **Test**: Run `jest nine-router.adapter`.
 - **Estimated Complexity**: M
@@ -611,8 +611,8 @@ graph TD
 - **Files**: `apps/api/src/ai-review/services/ai-review-result-normalizer.service.ts`
 - **Dependencies**: Task 0.5
 - **Implementation**:
-    - [ ] Strip markdown formatting (e.g. ````json ... ````).
-    - [ ] Parse JSON output, throw exception on invalid formats.
+    - [x] Strip markdown formatting (e.g. ````json ... ````).
+    - [x] Parse JSON output, throw exception on invalid formats.
 - **Acceptance Criteria**: Returns clean, parsed JavaScript objects.
 - **Test**: Feed malformed markdown wrappers and check parser outputs.
 - **Estimated Complexity**: S
@@ -623,7 +623,7 @@ graph TD
 - **Files**: `apps/api/src/ai-review/services/ai-review-result-normalizer.service.ts`
 - **Dependencies**: Task 8.1
 - **Implementation**:
-    - [ ] Reject individual findings missing title, description, or filePath properties.
+    - [x] Reject individual findings missing title, description, or filePath properties.
 - **Acceptance Criteria**: Dropped findings are filtered, count statistics logged.
 - **Test**: Assert validation outcomes when processing incomplete schemas.
 - **Estimated Complexity**: S
@@ -634,8 +634,8 @@ graph TD
 - **Files**: `apps/api/src/ai-review/services/ai-review-result-normalizer.service.ts`
 - **Dependencies**: Task 8.2
 - **Implementation**:
-    - [ ] Clamp confidence properties between 0.0 and 1.0.
-    - [ ] Convert severity and category parameters to uppercase DB enum equivalents.
+    - [x] Clamp confidence properties between 0.0 and 1.0.
+    - [x] Convert severity and category parameters to uppercase DB enum equivalents.
 - **Acceptance Criteria**: Sanitized parameters match Database requirements schema.
 - **Test**: Run validations passing lowercase variables and assert conversions.
 - **Estimated Complexity**: S
@@ -646,7 +646,7 @@ graph TD
 - **Files**: `apps/api/src/ai-review/repositories/ai-review-finding.repository.ts`
 - **Dependencies**: Task 8.3
 - **Implementation**:
-    - [ ] Create `createMany(jobId: string, findings: any[])` using Prisma createMany.
+    - [x] Create `createMany(jobId: string, findings: any[])` using Prisma createMany.
 - **Acceptance Criteria**: Findings rows are inserted successfully.
 - **Test**: Call repositories methods and verify database rows insertion.
 - **Estimated Complexity**: S
@@ -657,8 +657,8 @@ graph TD
 - **Files**: `apps/api/src/ai-review/services/ai-review-summary-builder.service.ts`
 - **Dependencies**: Task 8.4
 - **Implementation**:
-    - [ ] Sort findings list by severity (HIGH -> MEDIUM -> LOW).
-    - [ ] Prepend emoji indicators and append signatures UTC timestamps.
+    - [x] Sort findings list by severity (HIGH -> MEDIUM -> LOW).
+    - [x] Prepend emoji indicators and append signatures UTC timestamps.
 - **Acceptance Criteria**: Renders complete markdown report output formats.
 - **Test**: Generate summaries matching mock objects.
 - **Estimated Complexity**: M
@@ -669,7 +669,7 @@ graph TD
 - **Files**: `apps/api/src/ai-review/services/ai-review-result-normalizer.service.spec.ts`, `apps/api/src/ai-review/services/ai-review-summary-builder.service.spec.ts`
 - **Dependencies**: Task 8.5
 - **Implementation**:
-    - [ ] Assert parsing behaviors, sorting, and empty findings states.
+    - [x] Assert parsing behaviors, sorting, and empty findings states.
 - **Acceptance Criteria**: Parser and builder spec test suites pass.
 - **Test**: Run `jest ai-review-result-normalizer`.
 - **Estimated Complexity**: M
@@ -684,8 +684,8 @@ graph TD
 - **Files**: `apps/api/src/ai-review/services/ai-review-runner.service.ts`
 - **Dependencies**: Task 2.6, Task 4.5, Task 5.5, Task 6.5, Task 7.5, Task 8.6
 - **Implementation**:
-    - [ ] Import and inject necessary module components.
-    - [ ] Write skeleton `run(jobId: string)` method structure.
+    - [x] Import and inject necessary module components.
+    - [x] Write skeleton `run(jobId: string)` method structure.
 - **Acceptance Criteria**: Pipeline runs step routes without compilation issues.
 - **Test**: Check dependency injections loading on startup.
 - **Estimated Complexity**: S
@@ -696,8 +696,8 @@ graph TD
 - **Files**: `apps/api/src/ai-review/services/ai-review-runner.service.ts`, `apps/api/src/ai-review/repositories/ai-review-job.repository.ts`
 - **Dependencies**: Task 9.1
 - **Implementation**:
-    - [ ] Set status `PROCESSING` on startup.
-    - [ ] Set status `SUCCESS` along with metrics and markdown summary outputs on completion.
+    - [x] Set status `PROCESSING` on startup.
+    - [x] Set status `SUCCESS` along with metrics and markdown summary outputs on completion.
 - **Acceptance Criteria**: Jobs transition successfully between states.
 - **Test**: Query DB job rows and assert status updates at each execution phase.
 - **Estimated Complexity**: S
@@ -708,8 +708,8 @@ graph TD
 - **Files**: `apps/api/src/ai-review/services/ai-review-runner.service.ts`
 - **Dependencies**: Task 9.2
 - **Implementation**:
-    - [ ] Wrap main pipeline within try/catch.
-    - [ ] Truncate error message strings to 1000 characters before updating job DB state.
+    - [x] Wrap main pipeline within try/catch.
+    - [x] Truncate error message strings to 1000 characters before updating job DB state.
 - **Acceptance Criteria**: Exceptions are captured and updated to database FAILED states.
 - **Test**: Force runner service failures and check database state.
 - **Estimated Complexity**: S
@@ -720,7 +720,7 @@ graph TD
 - **Files**: `apps/api/src/ai-review/services/ai-review-runner.service.ts`
 - **Dependencies**: Task 9.3
 - **Implementation**:
-    - [ ] Re-throw errors after updating job state.
+    - [x] Re-throw errors after updating job state.
 - **Acceptance Criteria**: Exceptions bubble up to BullMQ worker handlers.
 - **Test**: Verify queue retry triggers on pipeline failures.
 - **Estimated Complexity**: XS
@@ -731,7 +731,7 @@ graph TD
 - **Files**: `apps/api/src/ai-review/services/ai-review-runner.service.spec.ts`
 - **Dependencies**: Task 9.4
 - **Implementation**:
-    - [ ] Test end-to-end execution, database mapping updates, and note postings.
+    - [x] Test end-to-end execution, database mapping updates, and note postings.
 - **Acceptance Criteria**: Integration specs run successfully.
 - **Test**: Run `jest ai-review-runner.service.spec.ts`.
 - **Estimated Complexity**: L
@@ -746,7 +746,7 @@ graph TD
 - **Files**: `apps/api/test/ai-review-pipeline.e2e-spec.ts`
 - **Dependencies**: Task 9.5
 - **Implementation**:
-    - [ ] Mock GitLab API endpoints and verify enqueued job completions.
+    - [x] Mock GitLab API endpoints and verify enqueued job completions.
 - **Acceptance Criteria**: E2E pipeline mock runs pass cleanly.
 - **Test**: Run `pnpm test:e2e`.
 - **Estimated Complexity**: L
@@ -757,7 +757,7 @@ graph TD
 - **Files**: `apps/api/test/ai-review-tenant.e2e-spec.ts`
 - **Dependencies**: Task 10.1
 - **Implementation**:
-    - [ ] Attempt crud modifications using mismatching merchant credentials.
+    - [x] Attempt crud modifications using mismatching merchant credentials.
 - **Acceptance Criteria**: Cross-tenant requests return `404 Not Found` exceptions.
 - **Test**: Execute tenant specs suite checks.
 - **Estimated Complexity**: M

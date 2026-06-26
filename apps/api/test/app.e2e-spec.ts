@@ -1,3 +1,5 @@
+process.env.NINE_ROUTER_API_KEY = 'mock-key';
+
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import request from 'supertest';

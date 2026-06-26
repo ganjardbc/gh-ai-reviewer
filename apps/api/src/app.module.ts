@@ -14,12 +14,14 @@ import { UploadsModule } from './uploads/uploads.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { AiReviewModule } from './ai-review/ai-review.module';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
+import { validateConfig } from './config/configuration';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',
+      validate: validateConfig,
     }),
     BullModule.forRootAsync({
       useFactory: (configService: ConfigService) => ({

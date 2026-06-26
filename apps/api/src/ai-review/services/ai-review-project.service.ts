@@ -3,11 +3,7 @@ import { AiReviewProjectRepository } from '../repositories/ai-review-project.rep
 import { CreateAiReviewProjectDto } from '../dto/create-ai-review-project.dto';
 import { UpdateAiReviewProjectDto } from '../dto/update-ai-review-project.dto';
 import type { ai_review_projects } from '@prisma/client';
-
-export type SanitizedAiReviewProject = Omit<
-  ai_review_projects,
-  'access_token' | 'webhook_secret'
->;
+import { SanitizedAiReviewProject } from '@gh-skeleton/shared-types';
 
 @Injectable()
 export class AiReviewProjectService {
