@@ -230,7 +230,9 @@ describe('AiReviewContextBuilderService', () => {
     expect(context.truncated).toBe(true);
     expect(context.changedFilesCount).toBe(2);
     expect(context.files[0].diff).toBe('1234567890');
-    expect(context.files[1].diff).toBe('12345\n[DIFF TRUNCATED at maxPatchChars limit]');
+    expect(context.files[1].diff).toBe(
+      '12345\n[DIFF TRUNCATED at maxPatchChars limit]',
+    );
     expect(context.totalPatchChars).toBe(30);
   });
 });

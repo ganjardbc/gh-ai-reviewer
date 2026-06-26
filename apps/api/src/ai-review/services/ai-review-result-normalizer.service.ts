@@ -28,9 +28,13 @@ export class AiReviewResultNormalizerService {
     try {
       parsed = JSON.parse(rawJson);
     } catch (error: any) {
-      this.logger.error(`Failed to parse LLM raw response JSON: ${error.message}`);
+      this.logger.error(
+        `Failed to parse LLM raw response JSON: ${error.message}`,
+      );
       this.logger.debug(`Raw response was: ${rawJson}`);
-      throw new BadRequestException(`Malformed JSON response from LLM: ${error.message}`);
+      throw new BadRequestException(
+        `Malformed JSON response from LLM: ${error.message}`,
+      );
     }
 
     if (!parsed || typeof parsed !== 'object') {
@@ -62,37 +66,56 @@ export class AiReviewResultNormalizerService {
 
         // Check required fields
         if (
-          typeof title !== 'string' || !title ||
-          typeof description !== 'string' || !description ||
-          typeof severity !== 'string' || !severity ||
-          typeof category !== 'string' || !category
+          typeof title !== 'string' ||
+          !title ||
+          typeof description !== 'string' ||
+          !description ||
+          typeof severity !== 'string' ||
+          !severity ||
+          typeof category !== 'string' ||
+          !category
         ) {
-          this.logger.warn(`Skipping finding due to missing/invalid required fields: ${JSON.stringify(finding)}`);
+          this.logger.warn(
+            `Skipping finding due to missing/invalid required fields: ${JSON.stringify(finding)}`,
+          );
           continue;
         }
 
         // Map severity
         const upperSeverity = severity.toUpperCase();
         let normalizedSeverity: AiReviewSeverity;
-        if (Object.values(AiReviewSeverity).includes(upperSeverity as AiReviewSeverity)) {
+        if (
+          Object.values(AiReviewSeverity).includes(
+            upperSeverity as AiReviewSeverity,
+          )
+        ) {
           normalizedSeverity = upperSeverity as AiReviewSeverity;
         } else {
-          this.logger.warn(`Skipping finding due to unknown severity "${severity}"`);
+          this.logger.warn(
+            `Skipping finding due to unknown severity "${severity}"`,
+          );
           continue;
         }
 
         // Map category
         const upperCategory = category.toUpperCase();
         let normalizedCategory: AiReviewFindingCategory;
-        if (Object.values(AiReviewFindingCategory).includes(upperCategory as AiReviewFindingCategory)) {
+        if (
+          Object.values(AiReviewFindingCategory).includes(
+            upperCategory as AiReviewFindingCategory,
+          )
+        ) {
           normalizedCategory = upperCategory as AiReviewFindingCategory;
         } else {
-          this.logger.warn(`Skipping finding due to unknown category "${category}"`);
+          this.logger.warn(
+            `Skipping finding due to unknown category "${category}"`,
+          );
           continue;
         }
 
         // Normalize filePath
-        const filePath = typeof finding.filePath === 'string' ? finding.filePath.trim() : null;
+        const filePath =
+          typeof finding.filePath === 'string' ? finding.filePath.trim() : null;
 
         // Normalize line
         let line: number | null = null;
@@ -104,7 +127,10 @@ export class AiReviewResultNormalizerService {
         }
 
         // Normalize suggestion
-        const suggestion = typeof finding.suggestion === 'string' ? finding.suggestion.trim() : null;
+        const suggestion =
+          typeof finding.suggestion === 'string'
+            ? finding.suggestion.trim()
+            : null;
 
         // Normalize confidence
         let confidence: number | null = null;

@@ -8,7 +8,10 @@ export class AiReviewFindingRepository {
 
   async createMany(
     aiReviewJobId: string,
-    findings: Omit<Prisma.ai_review_findingsUncheckedCreateInput, 'ai_review_job_id'>[],
+    findings: Omit<
+      Prisma.ai_review_findingsUncheckedCreateInput,
+      'ai_review_job_id'
+    >[],
   ): Promise<Prisma.BatchPayload> {
     const data = findings.map((f) => ({
       ...f,

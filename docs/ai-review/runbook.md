@@ -29,14 +29,14 @@ curl -X POST https://your-api-host/ai-review/projects \
   -H "Content-Type: application/json" \
   -d '{
     "name": "My Repo — AI Review",
-    "gitlabBaseUrl": "https://gitlab.com",
-    "gitlabProjectId": "12345678",
-    "gitlabProjectPath": "mygroup/myrepo",
-    "webhookSecret": "<generated-secret>",
-    "accessToken": "<gitlab-access-token>",
-    "autoReviewEnabled": true,
-    "maxChangedFiles": 30,
-    "maxPatchChars": 120000
+    "gitlab_base_url": "https://gitlab.com",
+    "gitlab_project_id": "12345678",
+    "gitlab_project_path": "mygroup/myrepo",
+    "webhook_secret": "<generated-secret>",
+    "access_token": "<gitlab-access-token>",
+    "auto_review_enabled": true,
+    "max_changed_files": 30,
+    "max_patch_chars": 120000
   }'
 ```
 
@@ -49,7 +49,7 @@ curl https://your-api-host/ai-review/projects/<project-id> \
   -H "Authorization: Bearer <your-jwt>"
 ```
 
-Confirm `isActive: true`, `autoReviewEnabled: true`. Note that `accessToken` is not returned — this is by design.
+Confirm `is_active: true`, `auto_review_enabled: true`. Note that `access_token` and `webhook_secret` are not returned — this is by design.
 
 ---
 
@@ -160,7 +160,7 @@ curl "https://your-api-host/ai-review/jobs/<job-id>" \
 
 ### Job FAILED — "Invalid or expired access token"
 
-**Cause**: The GitLab `accessToken` stored in `AiReviewProject` is expired or revoked.
+**Cause**: The GitLab `access_token` stored in `AiReviewProject` is expired or revoked.
 
 **Fix**:
 1. Generate a new GitLab access token with `api` scope.
@@ -170,7 +170,7 @@ curl "https://your-api-host/ai-review/jobs/<job-id>" \
 curl -X PATCH https://your-api-host/ai-review/projects/<project-id> \
   -H "Authorization: Bearer <your-jwt>" \
   -H "Content-Type: application/json" \
-  -d '{ "accessToken": "<new-token>" }'
+  -d '{ "access_token": "<new-token>" }'
 ```
 
 ---
@@ -181,13 +181,13 @@ curl -X PATCH https://your-api-host/ai-review/projects/<project-id> \
 
 **Check**: Look at `changedFilesCount` and the diff size in `rawResponseJson` (null on timeout).
 
-**Fix**: Lower `maxPatchChars` for this project:
+**Fix**: Lower `max_patch_chars` for this project:
 
 ```bash
 curl -X PATCH https://your-api-host/ai-review/projects/<project-id> \
   -H "Authorization: Bearer <your-jwt>" \
   -H "Content-Type: application/json" \
-  -d '{ "maxPatchChars": 60000 }'
+  -d '{ "max_patch_chars": 60000 }'
 ```
 
 ---
@@ -244,9 +244,9 @@ To pause reviews without deleting the project:
 curl -X PATCH https://your-api-host/ai-review/projects/<project-id> \
   -H "Authorization: Bearer <your-jwt>" \
   -H "Content-Type: application/json" \
-  -d '{ "autoReviewEnabled": false }'
+  -d '{ "auto_review_enabled": false }'
 ```
 
-Webhooks will still be accepted and jobs created, but nothing will be enqueued. Re-enable by setting `autoReviewEnabled: true`.
+Webhooks will still be accepted and jobs created, but nothing will be enqueued. Re-enable by setting `auto_review_enabled: true`.
 
-To fully disable: set `isActive: false`. The webhook handler will treat inactive projects as not found (404).
+To fully disable: set `is_active: false`. The webhook handler will treat inactive projects as not found (404).

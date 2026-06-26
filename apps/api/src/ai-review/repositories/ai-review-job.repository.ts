@@ -6,7 +6,9 @@ import { Prisma, ai_review_jobs, AiReviewJobStatus } from '@prisma/client';
 export class AiReviewJobRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(data: Prisma.ai_review_jobsUncheckedCreateInput): Promise<ai_review_jobs> {
+  async create(
+    data: Prisma.ai_review_jobsUncheckedCreateInput,
+  ): Promise<ai_review_jobs> {
     return this.prisma.ai_review_jobs.create({ data });
   }
 

@@ -1,5 +1,17 @@
-import { Controller, Get, Param, Patch, Query, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
 import { RequirePermission } from '../common/decorators/require-permission.decorator';
 import { PermissionGuard } from '../common/guards/permission.guard';
@@ -16,8 +28,14 @@ export class NotificationsController {
   @Get()
   @RequirePermission('notification.read')
   @ApiOperation({ summary: 'Get notifications list' })
-  @ApiResponse({ status: 200, description: 'Notifications fetched successfully' })
-  findAll(@CurrentUser('id') userId: string, @Query() query: ListNotificationsDto) {
+  @ApiResponse({
+    status: 200,
+    description: 'Notifications fetched successfully',
+  })
+  findAll(
+    @CurrentUser('id') userId: string,
+    @Query() query: ListNotificationsDto,
+  ) {
     return this.notificationsService.findAll(userId, query);
   }
 

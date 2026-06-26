@@ -226,9 +226,7 @@ export class RbacService {
       },
     });
     if (existing) {
-      throw new ConflictException(
-        'Role already assigned to this user',
-      );
+      throw new ConflictException('Role already assigned to this user');
     }
 
     return this.prisma.user_roles.create({

@@ -25,14 +25,14 @@ describe('AiReviewResultNormalizerService', () => {
           confidence: 0.95,
         },
       ],
-      suggestedTests: [
-        'Test unauthenticated access returns 401',
-      ],
+      suggestedTests: ['Test unauthenticated access returns 401'],
     });
 
     const result = service.normalize(validJson);
 
-    expect(result.summary).toBe('This MR is generally well-structured but has a security flaw.');
+    expect(result.summary).toBe(
+      'This MR is generally well-structured but has a security flaw.',
+    );
     expect(result.riskLevel).toBe('MEDIUM');
     expect(result.findings).toHaveLength(1);
     expect(result.findings[0]).toEqual({
@@ -45,7 +45,9 @@ describe('AiReviewResultNormalizerService', () => {
       suggestion: 'Add @RequirePermission()',
       confidence: 0.95,
     });
-    expect(result.suggestedTests).toEqual(['Test unauthenticated access returns 401']);
+    expect(result.suggestedTests).toEqual([
+      'Test unauthenticated access returns 401',
+    ]);
   });
 
   it('should throw BadRequestException on malformed JSON syntax', () => {

@@ -3,11 +3,11 @@ export function matchesPattern(path: string, pattern: string): boolean {
   if (!trimmedPattern) return false;
 
   // Translate wildcard patterns to RegExp
-  let regexStr = trimmedPattern
+  const regexStr = trimmedPattern
     .replace(/[.+^${}()|[\]\\]/g, '\\$&') // Escape regex special chars
     .replace(/\*\*/g, '___DOUBLE_STAR___') // Placeholder for **
-    .replace(/\*/g, '[^/]*')               // * matches non-slash chars
-    .replace(/___DOUBLE_STAR___/g, '.*');  // ** matches any char
+    .replace(/\*/g, '[^/]*') // * matches non-slash chars
+    .replace(/___DOUBLE_STAR___/g, '.*'); // ** matches any char
 
   const regex = new RegExp(`^${regexStr}$`);
 

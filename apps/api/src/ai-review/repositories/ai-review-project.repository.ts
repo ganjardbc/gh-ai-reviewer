@@ -6,7 +6,9 @@ import { Prisma, ai_review_projects } from '@prisma/client';
 export class AiReviewProjectRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(data: Prisma.ai_review_projectsCreateInput): Promise<ai_review_projects> {
+  async create(
+    data: Prisma.ai_review_projectsUncheckedCreateInput,
+  ): Promise<ai_review_projects> {
     return this.prisma.ai_review_projects.create({ data });
   }
 
@@ -16,13 +18,18 @@ export class AiReviewProjectRepository {
     });
   }
 
-  async findByGitlabProjectId(gitlabProjectId: string): Promise<ai_review_projects | null> {
+  async findByGitlabProjectId(
+    gitlabProjectId: string,
+  ): Promise<ai_review_projects | null> {
     return this.prisma.ai_review_projects.findUnique({
       where: { gitlab_project_id: gitlabProjectId },
     });
   }
 
-  async update(id: string, data: Prisma.ai_review_projectsUpdateInput): Promise<ai_review_projects> {
+  async update(
+    id: string,
+    data: Prisma.ai_review_projectsUncheckedUpdateInput,
+  ): Promise<ai_review_projects> {
     return this.prisma.ai_review_projects.update({
       where: { id },
       data,
@@ -38,6 +45,12 @@ export class AiReviewProjectRepository {
     }
     return this.prisma.ai_review_projects.findMany({
       orderBy: { created_at: 'desc' },
+    });
+  }
+
+  async delete(id: string): Promise<ai_review_projects> {
+    return this.prisma.ai_review_projects.delete({
+      where: { id },
     });
   }
 }

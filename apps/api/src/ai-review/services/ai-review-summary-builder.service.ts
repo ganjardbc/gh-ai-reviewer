@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { NormalizedReviewResult, NormalizedReviewFinding } from './ai-review-result-normalizer.service';
+import { NormalizedReviewResult } from './ai-review-result-normalizer.service';
 import { AiReviewSeverity } from '@prisma/client';
 
 @Injectable()
@@ -32,7 +32,9 @@ export class AiReviewSummaryBuilderService {
       };
 
       const sortedFindings = [...findings].sort((a, b) => {
-        return (severityOrder[a.severity] || 99) - (severityOrder[b.severity] || 99);
+        return (
+          (severityOrder[a.severity] || 99) - (severityOrder[b.severity] || 99)
+        );
       });
 
       const emojiMap: Record<AiReviewSeverity, string> = {

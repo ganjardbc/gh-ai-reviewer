@@ -1,6 +1,6 @@
 export interface GitlabMrEvent {
-  eventType: string;           // always "merge_request"
-  action: string;              // open | update | reopen | ...
+  eventType: string; // always "merge_request"
+  action: string; // open | update | reopen | ...
   gitlabProjectId: string;
   mrIid: number;
   mrId: number;
@@ -15,7 +15,7 @@ export interface GitlabMrEvent {
 export function mapGitlabWebhook(payload: any): GitlabMrEvent {
   const attrs = payload.object_attributes || {};
   const project = payload.project || {};
-  
+
   return {
     eventType: payload.object_kind || 'merge_request',
     action: attrs.action || 'open',

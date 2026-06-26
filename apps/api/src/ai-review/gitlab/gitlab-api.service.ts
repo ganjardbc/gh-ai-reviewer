@@ -36,7 +36,7 @@ export class GitlabApiService {
     const res = await fetch(url, {
       headers: {
         'PRIVATE-TOKEN': token,
-        'Accept': 'application/json',
+        Accept: 'application/json',
       },
     });
 
@@ -59,7 +59,7 @@ export class GitlabApiService {
     const res = await fetch(url, {
       headers: {
         'PRIVATE-TOKEN': token,
-        'Accept': 'application/json',
+        Accept: 'application/json',
       },
     });
 
@@ -85,7 +85,7 @@ export class GitlabApiService {
       headers: {
         'PRIVATE-TOKEN': token,
         'Content-Type': 'application/json',
-        'Accept': 'application/json',
+        Accept: 'application/json',
       },
       body: JSON.stringify({ body }),
     });

@@ -46,7 +46,9 @@ describe('GitlabWebhookService', () => {
   });
 
   it('should throw BadRequestException on empty payload', async () => {
-    await expect(service.handleWebhook('token', null)).rejects.toThrow(BadRequestException);
+    await expect(service.handleWebhook('token', null)).rejects.toThrow(
+      BadRequestException,
+    );
   });
 
   it('should skip non-supported MR actions', async () => {
@@ -71,7 +73,9 @@ describe('GitlabWebhookService', () => {
     };
     projectRepo.findByGitlabProjectId.mockResolvedValue(null);
 
-    await expect(service.handleWebhook('token', payload)).rejects.toThrow(NotFoundException);
+    await expect(service.handleWebhook('token', payload)).rejects.toThrow(
+      NotFoundException,
+    );
   });
 
   it('should create job and enqueue if autoReviewEnabled is true', async () => {

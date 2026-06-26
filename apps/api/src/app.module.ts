@@ -15,7 +15,6 @@ import { NotificationsModule } from './notifications/notifications.module';
 import { AiReviewModule } from './ai-review/ai-review.module';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 
-
 @Module({
   imports: [
     ConfigModule.forRoot({

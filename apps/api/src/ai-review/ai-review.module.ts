@@ -15,6 +15,12 @@ import { PromptBuilderService } from './llm/prompt-builder.service';
 import { NineRouterAdapter } from './llm/nine-router.adapter';
 import { AiReviewLlmService } from './llm/ai-review-llm.service';
 import { AiReviewSummaryBuilderService } from './services/ai-review-summary-builder.service';
+import { AiReviewRunnerService } from './services/ai-review-runner.service';
+import { AiReviewProcessor } from './queue/ai-review.processor';
+import { AiReviewProjectService } from './services/ai-review-project.service';
+import { AiReviewJobService } from './services/ai-review-job.service';
+import { AiReviewProjectController } from './controllers/ai-review-project.controller';
+import { AiReviewJobController } from './controllers/ai-review-job.controller';
 
 @Module({
   imports: [
@@ -25,6 +31,8 @@ import { AiReviewSummaryBuilderService } from './services/ai-review-summary-buil
   controllers: [
     AiReviewController,
     GitlabWebhookController,
+    AiReviewProjectController,
+    AiReviewJobController,
   ],
   providers: [
     AiReviewService,
@@ -40,6 +48,10 @@ import { AiReviewSummaryBuilderService } from './services/ai-review-summary-buil
     NineRouterAdapter,
     AiReviewLlmService,
     AiReviewSummaryBuilderService,
+    AiReviewRunnerService,
+    AiReviewProcessor,
+    AiReviewProjectService,
+    AiReviewJobService,
   ],
   exports: [
     AiReviewService,
@@ -55,8 +67,10 @@ import { AiReviewSummaryBuilderService } from './services/ai-review-summary-buil
     NineRouterAdapter,
     AiReviewLlmService,
     AiReviewSummaryBuilderService,
+    AiReviewRunnerService,
+    AiReviewProcessor,
+    AiReviewProjectService,
+    AiReviewJobService,
   ],
 })
 export class AiReviewModule {}
-
-

@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { InjectQueue } from '@nestjs/bullmq';
 import { Queue } from 'bullmq';
 import { AiReviewProjectRepository } from '../repositories/ai-review-project.repository';
@@ -16,13 +20,16 @@ export class GitlabWebhookService {
     @InjectQueue(AI_REVIEW_QUEUE) private readonly aiReviewQueue: Queue,
   ) {}
 
-  async handleWebhook(token: string, payload: any): Promise<{ jobId?: string; skipped: boolean }> {
+  async handleWebhook(
+    token: string,
+    payload: any,
+  ): Promise<{ jobId?: string; skipped: boolean }> {
     if (!payload || !payload.object_attributes) {
       throw new BadRequestException('Malformed webhook payload');
     }
 
     const mrEvent = mapGitlabWebhook(payload);
-    
+
     // Only process supported actions
     const supportedActions = ['open', 'update', 'reopen'];
     if (!supportedActions.includes(mrEvent.action)) {
@@ -34,9 +41,13 @@ export class GitlabWebhookService {
     }
 
     // 1. Find project
-    const project = await this.projectRepository.findByGitlabProjectId(mrEvent.gitlabProjectId);
+    const project = await this.projectRepository.findByGitlabProjectId(
+      mrEvent.gitlabProjectId,
+    );
     if (!project) {
-      throw new NotFoundException(`AiReviewProject not found for gitlabProjectId: ${mrEvent.gitlabProjectId}`);
+      throw new NotFoundException(
+        `AiReviewProject not found for gitlabProjectId: ${mrEvent.gitlabProjectId}`,
+      );
     }
 
     // 2. Verify token

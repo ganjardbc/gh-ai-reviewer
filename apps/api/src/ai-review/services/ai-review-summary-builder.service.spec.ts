@@ -35,9 +35,7 @@ describe('AiReviewSummaryBuilderService', () => {
           confidence: 0.95,
         },
       ],
-      suggestedTests: [
-        'Test access without correct permission returns 403',
-      ],
+      suggestedTests: ['Test access without correct permission returns 403'],
     };
 
     const summary = service.build(mockResult);
@@ -45,7 +43,7 @@ describe('AiReviewSummaryBuilderService', () => {
     expect(summary).toContain('## AI Review Summary');
     expect(summary).toContain('**Risk Level**: MEDIUM');
     expect(summary).toContain('The code is mostly good, but has minor issues.');
-    
+
     // Check sorting: HIGH first, then LOW
     const highIdx = summary.indexOf('🔴 HIGH — Security');
     const lowIdx = summary.indexOf('🔵 LOW — Maintainability');
@@ -54,14 +52,18 @@ describe('AiReviewSummaryBuilderService', () => {
     expect(highIdx).toBeLessThan(lowIdx);
 
     // Check content details
-    expect(summary).toContain('**[Security] Missing RBAC check** (\`src/user.controller.ts\`)');
+    expect(summary).toContain(
+      '**[Security] Missing RBAC check** (`src/user.controller.ts`)',
+    );
     expect(summary).toContain('> Line 42');
     expect(summary).toContain('**Suggestion**: Add @RequirePermission().');
     expect(summary).toContain('Confidence: 0.95');
 
     // Check tests
     expect(summary).toContain('### Suggested Tests');
-    expect(summary).toContain('- Test access without correct permission returns 403');
+    expect(summary).toContain(
+      '- Test access without correct permission returns 403',
+    );
 
     // Check footer
     expect(summary).toContain('Reviewed by AI Reviewer V1 ·');

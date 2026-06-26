@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { ai_review_projects } from '@prisma/client';
+import type { ai_review_projects } from '@prisma/client';
 import { GitlabMrChange } from '../gitlab/gitlab-api.service';
 import { isIgnored } from '../utils/glob-matcher';
 
@@ -58,7 +58,10 @@ export class AiReviewContextBuilderService {
     if (project.ignore_patterns && Array.isArray(project.ignore_patterns)) {
       projectIgnorePatterns = project.ignore_patterns as string[];
     }
-    const allIgnorePatterns = [...DEFAULT_IGNORE_PATTERNS, ...projectIgnorePatterns];
+    const allIgnorePatterns = [
+      ...DEFAULT_IGNORE_PATTERNS,
+      ...projectIgnorePatterns,
+    ];
 
     // 2. Filter changes
     const filteredChanges = changes.filter((change) => {
@@ -78,7 +81,10 @@ export class AiReviewContextBuilderService {
 
     // 3. Apply file count cap
     const cappedChanges = filteredChanges.slice(0, maxChangedFiles);
-    const omittedFilesCount = Math.max(0, filteredChanges.length - maxChangedFiles);
+    const omittedFilesCount = Math.max(
+      0,
+      filteredChanges.length - maxChangedFiles,
+    );
 
     // 4. Construct files and handle patch char limit truncation
     const files: ReviewContextFile[] = [];
@@ -106,7 +112,9 @@ export class AiReviewContextBuilderService {
 
       if (diffText.length > remainingSpace) {
         // Truncate this file's diff
-        const truncatedDiff = diffText.substring(0, remainingSpace) + '\n[DIFF TRUNCATED at maxPatchChars limit]';
+        const truncatedDiff =
+          diffText.substring(0, remainingSpace) +
+          '\n[DIFF TRUNCATED at maxPatchChars limit]';
         files.push({
           path: change.new_path,
           isNewFile: change.new_file,

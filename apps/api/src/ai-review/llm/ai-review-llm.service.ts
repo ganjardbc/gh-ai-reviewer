@@ -10,7 +10,10 @@ export class AiReviewLlmService {
     private readonly nineRouterAdapter: NineRouterAdapter,
   ) {}
 
-  async review(context: ReviewContext, modelOverride?: string): Promise<string> {
+  async review(
+    context: ReviewContext,
+    modelOverride?: string,
+  ): Promise<string> {
     const messages = this.promptBuilderService.buildMessages(context);
     return this.nineRouterAdapter.complete(messages, modelOverride);
   }
