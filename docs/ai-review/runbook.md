@@ -101,7 +101,7 @@ A non-zero value means jobs are queued but not being processed (worker not runni
 ### 3.3 Check job status via API
 
 ```bash
-curl "https://your-api-host/ai-review/jobs?projectId=<project-id>&status=PROCESSING" \
+curl "https://your-api-host/ai-review/jobs?project_id=<project-id>&status=PROCESSING" \
   -H "Authorization: Bearer <your-jwt>"
 ```
 
@@ -116,7 +116,7 @@ Jobs stuck in `PROCESSING` for more than 3 minutes indicate a worker crash or ti
 3. Check the job was created:
 
 ```bash
-curl "https://your-api-host/ai-review/jobs?projectId=<project-id>&status=SUCCESS" \
+curl "https://your-api-host/ai-review/jobs?project_id=<project-id>&status=SUCCESS" \
   -H "Authorization: Bearer <your-jwt>"
 ```
 
@@ -149,9 +149,10 @@ redis-cli -h $REDIS_HOST -p $REDIS_PORT PING
 
 **Check**:
 ```bash
+# Get details of the specific job
 curl "https://your-api-host/ai-review/jobs/<job-id>" \
   -H "Authorization: Bearer <your-jwt>"
-# Look at startedAt vs. now. If > 3 minutes, it's stuck.
+# Look at started_at vs. now. If > 3 minutes, it's stuck.
 ```
 
 **Fix**: Restart the API. The BullMQ job will be recovered from Redis on next startup (it is still in the `active` set). The job will be retried if `attempts > 1` — in V1, it will remain in `PROCESSING` state in the DB even after BullMQ retries. A cleanup script or manual update may be needed.
@@ -179,7 +180,7 @@ curl -X PATCH https://your-api-host/ai-review/projects/<project-id> \
 
 **Cause**: LLM request timed out. Usually happens on very large diffs.
 
-**Check**: Look at `changedFilesCount` and the diff size in `rawResponseJson` (null on timeout).
+**Check**: Look at `changed_files_count` and the diff size in `raw_response_json` (null on timeout).
 
 **Fix**: Lower `max_patch_chars` for this project:
 

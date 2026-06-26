@@ -772,7 +772,7 @@ graph TD
 - **Files**: `apps/api/src/ai-review/controllers/ai-review-project.controller.ts`, `apps/api/src/ai-review/controllers/ai-review-job.controller.ts`
 - **Dependencies**: Task 1.5
 - **Implementation**:
-    - [ ] Map `@ApiTags`, `@ApiOperation`, and `@ApiResponse` parameters details.
+    - [x] Map `@ApiTags`, `@ApiOperation`, and `@ApiResponse` parameters details.
 - **Acceptance Criteria**: Swagger documentation outputs match API route specifications.
 - **Test**: Open Swagger UI web dashboard check.
 - **Estimated Complexity**: S
@@ -783,7 +783,7 @@ graph TD
 - **Files**: `docs/ai-review/runbook.md`
 - **Dependencies**: Task 11.1
 - **Implementation**:
-    - [ ] Document properties configurations matching snake_case naming variables conventions.
+    - [x] Document properties configurations matching snake_case naming variables conventions.
 - **Acceptance Criteria**: Runbooks document correct parameter requirements schemas.
 - **Test**: Run a manual check verifying step checklists match specifications.
 - **Estimated Complexity**: S

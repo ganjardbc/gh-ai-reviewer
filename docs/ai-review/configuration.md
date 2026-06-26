@@ -35,13 +35,13 @@ Each `AiReviewProject` record stores per-project configuration. These are set vi
 
 | Field | Type | Default | Description |
 |---|---|---|---|
-| `autoReviewEnabled` | boolean | `true` | When false, webhooks are accepted but jobs are not enqueued |
-| `reviewMode` | enum | `DIFF_ONLY` | V1 only supports `DIFF_ONLY` |
-| `maxChangedFiles` | int | `30` | Max number of changed files sent to LLM after filtering |
-| `maxPatchChars` | int | `120000` | Max total patch text characters sent to LLM |
-| `ignorePatterns` | string[] (JSON) | see below | Glob patterns for files to exclude |
+| `auto_review_enabled` | boolean | `true` | When false, webhooks are accepted but jobs are not enqueued |
+| `review_mode` | enum | `DIFF_ONLY` | V1 only supports `DIFF_ONLY` |
+| `max_changed_files` | int | `30` | Max number of changed files sent to LLM after filtering |
+| `max_patch_chars` | int | `120000` | Max total patch text characters sent to LLM |
+| `ignore_patterns` | string[] (JSON) | see below | Glob patterns for files to exclude |
 
-### Default `ignorePatterns`
+### Default `ignore_patterns`
 
 ```json
 [
@@ -71,27 +71,27 @@ Each `AiReviewProject` record stores per-project configuration. These are set vi
 ]
 ```
 
-These defaults are not stored per-project by default — they are applied in `AiReviewContextBuilderService` if `ignorePatterns` is an empty array. If a project sets a non-empty `ignorePatterns`, the defaults are **replaced**, not merged.
+These defaults are not stored per-project by default — they are applied in `AiReviewContextBuilderService` if `ignore_patterns` is an empty array. If a project sets a non-empty `ignore_patterns`, the defaults are **replaced**, not merged.
 
 ### GitLab Connection
 
 | Field | Description |
 |---|---|
-| `gitlabBaseUrl` | GitLab instance base URL. Default: `https://gitlab.com` |
-| `gitlabProjectId` | Numeric GitLab project ID (from project settings) |
-| `gitlabProjectPath` | Human-readable path (e.g. `mygroup/myrepo`). Used for display only. |
-| `webhookSecret` | Secret token registered in GitLab webhook settings |
-| `accessToken` | GitLab access token with `api` scope |
+| `gitlab_base_url` | GitLab instance base URL. Default: `https://gitlab.com` |
+| `gitlab_project_id` | Numeric GitLab project ID (from project settings) |
+| `gitlab_project_path` | Human-readable path (e.g. `mygroup/myrepo`). Used for display only. |
+| `webhook_secret` | Secret token registered in GitLab webhook settings |
+| `access_token` | GitLab access token with `api` scope |
 
 ---
 
 ## Review Limits Rationale
 
-### `maxChangedFiles = 30`
+### `max_changed_files = 30`
 
 Large MRs (50+ files) are typically infrastructure changes, large refactors, or generated code. These are both expensive to review and produce low-signal findings. Capping at 30 keeps prompt size predictable and forces teams to split large MRs.
 
-### `maxPatchChars = 120,000`
+### `max_patch_chars = 120,000`
 
 At ~4 chars/token, 120k chars ≈ 30k tokens of diff content. Combined with system prompt + output, this fits within most large-context models' effective windows while leaving room for a complete JSON response.
 
@@ -101,7 +101,7 @@ At ~4 chars/token, 120k chars ≈ 30k tokens of diff content. Combined with syst
 
 Model is configured per-environment via `AI_REVIEW_LLM_MODEL`. The value is passed directly to 9router. Changing the model affects all projects immediately.
 
-To use different models per project, add a `modelOverride` field to `AiReviewProject` in V2.
+To use different models per project, add a `model_override` field to `AiReviewProject` in V2.
 
 Recommended models via 9router:
 
