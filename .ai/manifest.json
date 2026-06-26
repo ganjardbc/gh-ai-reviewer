@@ -1,0 +1,30 @@
+{
+  "project": "gh-skeleton",
+  "version": "1.0.0",
+  "repository": "https://github.com/ganjardbc/gh-ai-reviewer",
+  "default_workflow": "workflow.md",
+  "supported_agents": [
+    "planner",
+    "executor",
+    "reviewer",
+    "fixer",
+    "merger"
+  ],
+  "context_loading_order": [
+    "context/project.md",
+    "context/architecture.md",
+    "context/conventions.md",
+    "context/coding-rules.md",
+    "context/glossary.md"
+  ],
+  "prompt_loading_order": [
+    "prompts/planner.md",
+    "prompts/executor.md",
+    "prompts/reviewer.md",
+    "prompts/fixer.md",
+    "prompts/merger.md"
+  ],
+  "task_file": "tasks/current-task.md",
+  "coding_standards": "context/coding-rules.md",
+  "review_policy": "context/conventions.md"
+}
